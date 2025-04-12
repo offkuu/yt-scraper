@@ -2,6 +2,19 @@ const express = require('express');
 const cors = require('cors');
 const puppeteer = require('puppeteer');
 
+const browser = await puppeteer.launch({
+  headless: true,
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--single-process',
+    '--disable-extensions',
+    '--remote-debugging-port=9222'
+  ],
+  executablePath: process.env.CHROME_BIN || puppeteer.executablePath(),
+});
+
+
 const app = express();
 
 // Konfiguracja CORS
