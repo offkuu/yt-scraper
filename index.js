@@ -39,6 +39,12 @@ app.post('/scrape', async (req, res) => {
     res.status(500).json({ error: 'Scraping failed', details: error.toString() });
   }
 });
+    // Ping endpoint do testowania połączenia
+    app.get('/ping', (req, res) => {
+        res.status(200).json({ message: 'Backend is up and running!' });
+    });
+    
+
 
 // Nasłuchuj na porcie
 const PORT = process.env.PORT || 3000;
