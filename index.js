@@ -4,12 +4,16 @@ const puppeteer = require('puppeteer');
 
 const app = express();
 
-// Konfiguracja CORS (zezwól na połączenia z dowolnej domeny)
-app.use(cors()); // Możesz ustawić bardziej specyficznie: app.use(cors({ origin: 'https://twojfrontend.netlify.app' }));
-
+// Konfiguracja CORS
+app.use(cors());
 app.use(express.json());
 
-// Scraper endpoint
+// Endpoint ping
+app.get('/ping', (req, res) => {
+  res.status(200).json({ message: 'Backend is up and running!' });
+});
+
+// Endpoint scrape
 app.post('/scrape', async (req, res) => {
   const { url } = req.body;
   if (!url || !url.includes('youtube.com/watch')) {
@@ -39,13 +43,9 @@ app.post('/scrape', async (req, res) => {
     res.status(500).json({ error: 'Scraping failed', details: error.toString() });
   }
 });
-    // Ping endpoint do testowania połączenia
-    app.get('/ping', (req, res) => {
-        res.status(200).json({ message: 'Backend is up and running!' });
-    });
-    
 
-
-// Nasłuchuj na porcie
+// Nasłuchujemy na porcie, który Heroku przypisuje dynamicznie
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
