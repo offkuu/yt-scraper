@@ -1,11 +1,15 @@
 const express = require('express');
-const puppeteer = require('puppeteer');
 const cors = require('cors');
+const puppeteer = require('puppeteer');
 
 const app = express();
-app.use(cors());
+
+// Konfiguracja CORS (zezwól na połączenia z dowolnej domeny)
+app.use(cors()); // Możesz ustawić bardziej specyficznie: app.use(cors({ origin: 'https://twojfrontend.netlify.app' }));
+
 app.use(express.json());
 
+// Scraper endpoint
 app.post('/scrape', async (req, res) => {
   const { url } = req.body;
   if (!url || !url.includes('youtube.com/watch')) {
@@ -36,5 +40,6 @@ app.post('/scrape', async (req, res) => {
   }
 });
 
+// Nasłuchuj na porcie
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
